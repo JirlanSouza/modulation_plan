@@ -52,13 +52,21 @@ export function ModulationAreaToDefaultPlanModulationArea(
 function createModulationDay(date: Date): ModulationDay {
     return {
         date,
-        hours: new Array(24)
-            .fill({ hour: "", state: false, coment: "" })
-            .map((v, i) => {
-                v.hour = parseModulationHour(i);
-                return v;
-            }),
+        hours: makeDayHours(),
     };
+}
+
+function makeDayHours() {
+    const hours: ModulationHour[] = [];
+    for (let i = 1; i <= 24; i++) {
+        hours[i] = {
+            hour: parseModulationHour(i),
+            state: false,
+        };
+    }
+
+    hours[24].hour = parseModulationHour(0);
+    return hours;
 }
 
 function parseModulationHour(hourNumber: number) {
