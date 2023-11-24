@@ -61,7 +61,7 @@ function makeDayHours() {
     for (let i = 1; i <= 24; i++) {
         hours[i] = {
             hour: parseModulationHour(i),
-            state: false,
+            state: true,
         };
     }
 
