@@ -7,12 +7,10 @@ import { usePlanModulationViewModel } from "./viewModel";
 export default function PlanModulation() {
     const {
         selectedDate,
-        selecteds,
         hasSelectionArea,
         planModulationData,
         setSelectedDate,
         toggleHour,
-        selectAllHours,
     } = usePlanModulationViewModel();
 
     return (
@@ -42,12 +40,16 @@ export default function PlanModulation() {
                     dayLabel="D0"
                     isDZero
                     date={selectedDate.toLocaleDateString("pt-br")}
+                    hasSelectionArea={hasSelectionArea}
+                    toggleHour={toggleHour}
                 />
 
                 <PlanModulationTable
                     planModulationData={planModulationData}
                     dayLabel="D+1"
                     date={addDays(selectedDate, 1).toLocaleDateString("pt-br")}
+                    hasSelectionArea={hasSelectionArea}
+                    toggleHour={toggleHour}
                 />
             </section>
         </div>
