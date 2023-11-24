@@ -1,10 +1,13 @@
 import { PlanModulationArea } from "./PlanModulation";
+import { ModulationHourRef } from "./viewModel";
 
 interface PlanModulationTableProps {
     planModulationData: PlanModulationArea[];
     dayLabel: string;
     isDZero?: boolean;
     date: string;
+    hasSelectionArea?: boolean;
+    toggleHour: (props: ModulationHourRef) => void;
 }
 
 export function PlanModulationTable({
@@ -12,6 +15,8 @@ export function PlanModulationTable({
     dayLabel,
     isDZero,
     date,
+    hasSelectionArea,
+    toggleHour,
 }: PlanModulationTableProps) {
     return (
         planModulationData.length > 0 && (
@@ -43,8 +48,8 @@ export function PlanModulationTable({
                         </tr>
                     </thead>
                     <tbody>
-                        {planModulationData.map((area) =>
-                            area.subAreas.map((subArea, index) => (
+                        {planModulationData.map((area, areaIndex) =>
+                            area.subAreas.map((subArea, subAreaIndex) => (
                                 <tr
                                     key={subArea.name}
                                     className="border-y-2 border-slate-900 first:border-t-0 last:border-b-0"
@@ -61,22 +66,31 @@ export function PlanModulationTable({
                                     </td>
                                     {subArea.modulation[
                                         isDZero ? "d0" : "dPlus1"
-                                    ].hours.map((hour) => (
+                                    ].hours.map((hour, hourIndex) => (
                                         <td
                                             key={subArea.name + hour.hour}
                                             className={`w-8 h-8 ${
-                                                "selecteds[index]"
+                                                hour.state
                                                     ? "bg-green-600"
                                                     : "bg-red-600"
                                             }
-                                border
-                                ${
-                                    "hasSelectionArea"
-                                        ? "border-d-yellow-600"
-                                        : "border-slate-600"
-                                }
-                                hover:brightness-90 cursor-pointer`}
-                                            //onClick={() => toggleHour(index)}
+                                            border
+                                            ${
+                                                hasSelectionArea
+                                                    ? "border-d-yellow-600"
+                                                    : "border-slate-600"
+                                            }
+                                            hover:brightness-90 cursor-pointer`}
+                                            onClick={() =>
+                                                toggleHour({
+                                                    areaIndex,
+                                                    subAreaIndex,
+                                                    day: isDZero
+                                                        ? "d0"
+                                                        : "dPlus1",
+                                                    hourIndex,
+                                                })
+                                            }
                                         >
                                             {hour.coment}
                                         </td>
