@@ -22,24 +22,31 @@ export function PlanModulationTable({
         planModulationData.length > 0 && (
             <div>
                 <div className="p-2">
-                    <strong className="text-xl">{dayLabel}</strong>
-                    <span className="ml-4 text-xs"> {date}</span>
+                    <strong className="text-lg md:text-xl">{dayLabel}</strong>
+                    <span className="ml-2 md:ml-4 text-xs"> {date}</span>
                 </div>
-                <table className="w-full rounded-xl border-collapse border border-slate-500 overflow-hidden text-sm">
+
+                <table
+                    className="
+                    w-full
+                    rounded-xl
+                    text-xs md:text-sm
+                    border-collapse border border-slate-500
+                    overflow-hidden"
+                >
                     <thead>
                         <tr>
-                            {/* <th className="w-8 h-6 bg-slate-200 border border-slate-600"></th> */}
-                            <th className="w-8 h-6 px-2 py-1 bg-slate-200 border border-slate-600">
+                            <th className="bg-slate-200 border border-slate-600">
                                 Area
                             </th>
-                            <th className="w-fit h-6 px-2 py-1 bg-slate-200 border border-slate-600">
+                            <th className="bg-slate-200 border border-slate-600">
                                 Sub area
                             </th>
                             {planModulationData[0].subAreas[0].modulation.d0.hours.map(
                                 (hour) => (
                                     <th
                                         key={hour.hour}
-                                        className="w-8 h-6 py-0 bg-slate-200 border border-slate-600 text-sm md:text-xs"
+                                        className="bg-slate-200 border border-slate-600 px-0.5"
                                     >
                                         {hour.hour}
                                     </th>
@@ -52,35 +59,30 @@ export function PlanModulationTable({
                             area.subAreas.map((subArea, subAreaIndex) => (
                                 <tr
                                     key={subArea.name}
-                                    className="border-y-2 border-slate-900 first:border-t-0 last:border-b-0"
+                                    data-selectionArea={hasSelectionArea}
+                                    className="
+                                    bg-slate-200
+                                    border-y-2 border-slate-900
+                                    data-[selectionArea=true]:hover:border-y-yellow-200"
                                 >
-                                    {/* <td
-                                        className="w-8 h-4 p-4 bg-slate-200 border border-slate-600"
-                                        //onClick={selectAllHours}
-                                    ></td> */}
-                                    <td className="w-8 h-4 px-2 py-1 bg-slate-200 border border-slate-600">
+                                    <td className="border border-y-2 border-slate-600">
                                         {area.name}
                                     </td>
-                                    <td className="w-8 h-4 px-2 py-1 bg-slate-200 border border-slate-600">
+                                    <td className="border border-y-2 border-slate-600">
                                         {subArea.name}
                                     </td>
+
                                     {subArea.modulation[
                                         isDZero ? "d0" : "dPlus1"
                                     ].hours.map((hour, hourIndex) => (
                                         <td
                                             key={subArea.name + hour.hour}
-                                            className={`w-8 h-8 ${
-                                                hour.state
-                                                    ? "bg-green-600"
-                                                    : "bg-red-600"
-                                            }
-                                            border
-                                            ${
-                                                hasSelectionArea
-                                                    ? "border-d-yellow-600"
-                                                    : "border-slate-600"
-                                            }
-                                            hover:brightness-90 cursor-pointer`}
+                                            data-state={hour.state}
+                                            className="
+                                            w-8 h-8
+                                            bg-red-600 data-[state=true]:bg-green-600
+                                            border-x border-slate-600                                           
+                                            hover:brightness-90 cursor-pointer"
                                             onClick={() =>
                                                 toggleHour({
                                                     areaIndex,
