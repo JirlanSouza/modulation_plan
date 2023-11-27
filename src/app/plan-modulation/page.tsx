@@ -16,12 +16,20 @@ export default function PlanModulation() {
     return (
         <div className="select-none">
             <div className="flex justify-between">
-                <h1 className="text-lg">Planejar modulação</h1>
-                <span className="flex flex-col gap-y-1 text-slate-700">
+                <h1 className="text-md md:text-lg">Planejar modulação</h1>
+
+                <span className="flex flex-col md:gap-y-1 text-slate-700">
                     <label className="text-xs">Selecione a data</label>
                     <input
                         type="date"
-                        className="h-8 rounded-lg p-2 bg-slate-200 select-none"
+                        className="
+                            h-6 md:h8
+                            text-sm md:text-base
+                            rounded-md md:rounded-lg
+                            p-1.5 md:p2
+                            bg-slate-200
+                            outline-cyan-500
+                            select-none"
                         value={selectedDate.toISOString().slice(0, 10)}
                         onChange={(e) =>
                             setSelectedDate(new Date(e.target.value))
@@ -34,7 +42,8 @@ export default function PlanModulation() {
                     />
                 </span>
             </div>
-            <section className="flex flex-col gap-8 mt-16">
+
+            <section className="flex flex-col gap-6 md:gap-8 mt-8 md:mt-12">
                 <PlanModulationTable
                     planModulationData={planModulationData}
                     dayLabel="D0"

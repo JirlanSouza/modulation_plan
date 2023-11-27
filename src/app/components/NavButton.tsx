@@ -16,20 +16,29 @@ interface NavButtonProps {
 
 export function NavButton({ label, isSelected, path, Icon }: NavButtonProps) {
     return (
-        <div
-            className={`flex items-center justify-center w-12 h-12 rounded-lg hover:bg-cyan-500 ${
-                isSelected && "bg-cyan-500 text-white"
-            }`}
+        <button
+            data-selected={isSelected}
+            className="
+            flex
+            items-center
+            justify-center
+            w-8
+            h-8
+            md:w-12
+            md:h-12
+            rounded-lg
+            hover:bg-cyan-500
+            data-[selected=true]:bg-cyan-500 text-white
+            "
         >
             <a href={path} className="-m-1.5 p-1.5">
                 <span className="sr-only">{label}</span>
                 <Icon
-                    className={`h-8 w-8 ${
-                        isSelected ? "text-slate-300" : "text-slate-800"
-                    }`}
+                    data-selected={isSelected}
+                    className="w-6 h-6 md:h-8 md:w-8 data-[selected=true]:text-slate-300 text-slate-800"
                     aria-hidden="true"
                 />
             </a>
-        </div>
+        </button>
     );
 }
