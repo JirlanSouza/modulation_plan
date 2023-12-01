@@ -28,8 +28,9 @@ export default function PlanModulation() {
                     bg-green-500 hover:bg-green-600
                     rounded-md md:rounded-lg
                     px-4
-                    text-slate-800 hover:text-slate-200
-                    active:scale-x-95
+                    text-sm md:text-base
+                    text-slate-100
+                    active:scale-95
                     transition-all"
                     >
                         Salvar

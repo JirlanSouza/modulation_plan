@@ -38,7 +38,7 @@ export function PlanModulationTable({
                     overflow-auto"
                     >
                         <thead>
-                            <tr className="[&>*]:border-x [&>*]:border-slate-400 [&>first]:border-0">
+                            <tr className="[&>th]:border [&>th]:border-slate-400">
                                 <th className="w-max px-2 py-1 bg-slate-200 ">
                                     Area
                                 </th>
@@ -63,7 +63,7 @@ export function PlanModulationTable({
                                         data-selectionArea={hasSelectionArea}
                                         className="
                                     bg-slate-200
-                                    
+                                    [&>td]:border [&>td]:border-slate-400
                                     data-[selectionArea=true]:hover:border-y-yellow-200"
                                     >
                                         <td className="px-2  border-slate-600">
@@ -84,7 +84,8 @@ export function PlanModulationTable({
                                             h-4 sm:h-8
                                             bg-red-600 data-[state=true]:bg-green-600
                                              border-slate-600                                           
-                                            hover:brightness-90 cursor-pointer"
+                                            hover:brightness-90 cursor-pointer
+                                            transition-all"
                                                 onClick={() =>
                                                     toggleHour({
                                                         areaIndex,
