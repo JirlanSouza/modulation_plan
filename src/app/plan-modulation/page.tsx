@@ -14,7 +14,7 @@ export default function PlanModulation() {
     } = usePlanModulationViewModel();
 
     return (
-        <div className="select-none">
+        <div className="select-none overflow-hidden">
             <div className="flex justify-between">
                 <h1 className="text-md md:text-lg">Planejar modulação</h1>
 
