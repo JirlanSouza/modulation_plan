@@ -20,7 +20,7 @@ export function PlanModulationTable({
 }: PlanModulationTableProps) {
     return (
         planModulationData.length > 0 && (
-            <div className="bg-slate-100 rounded-xl p-4 w-fit">
+            <div className="bg-slate-200 rounded-xl p-4 w-fit">
                 <div className="p-2">
                     <strong className="text-lg md:text-xl">{dayLabel}</strong>
                     <span className="ml-2 md:ml-4 text-xs"> {date}</span>
