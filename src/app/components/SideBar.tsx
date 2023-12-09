@@ -1,5 +1,6 @@
 "use client";
 
+import { matchRoutePath } from "@/utils/Navegation";
 import { HomeIcon, SquaresPlusIcon } from "@heroicons/react/24/outline";
 import { NavButton } from "./NavButton";
 
@@ -10,11 +11,17 @@ export function SideBar() {
                 className="flex flex-col items-center gap-y-2 p-2"
                 aria-label="Global"
             >
-                <NavButton label="Home" path="/" Icon={HomeIcon} isSelected />
+                <NavButton
+                    label="Home"
+                    path="/"
+                    Icon={HomeIcon}
+                    isSelected={matchRoutePath("/")}
+                />
                 <NavButton
                     label="Planejar modulação"
                     path="plan-modulation"
                     Icon={SquaresPlusIcon}
+                    isSelected={matchRoutePath("/plan-modulation")}
                 />
             </nav>
         </aside>

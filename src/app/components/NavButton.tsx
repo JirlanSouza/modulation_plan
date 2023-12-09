@@ -40,8 +40,7 @@ export function NavButton({ label, isSelected, path, Icon }: NavButtonProps) {
                     data-selected={isSelected}
                     className="
                         w-6 h-6 md:h-8
-                        md:w-8
-                        
+                        md:w-8                        
                         trasition-all"
                     aria-hidden="true"
                 />
