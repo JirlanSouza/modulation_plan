@@ -1,15 +1,16 @@
 "use client";
 
-import { addDays } from "@/utils/Date";
 import { PlanModulationTable } from "./PlanModulationTable";
 import { usePlanModulationViewModel } from "./viewModel";
 
 export default function PlanModulation() {
     const {
-        selectedDate,
+        selectedDateToInputValue,
+        dateLabelOnD0,
+        dateLabelOnDPlus1,
         hasSelectionArea,
         planModulationData,
-        setSelectedDate,
+        selectDate,
         toggleHour,
     } = usePlanModulationViewModel();
 
@@ -48,10 +49,8 @@ export default function PlanModulation() {
                             bg-slate-200
                             outline-cyan-500
                             select-none"
-                            value={selectedDate.toISOString().slice(0, 10)}
-                            onChange={(e) =>
-                                setSelectedDate(new Date(e.target.value))
-                            }
+                            value={selectedDateToInputValue}
+                            onChange={(e) => selectDate(e.target.value)}
                             onKeyDown={(e) => {
                                 e.preventDefault();
                                 e.stopPropagation();
@@ -67,7 +66,7 @@ export default function PlanModulation() {
                     planModulationData={planModulationData}
                     dayLabel="D0"
                     isDZero
-                    date={selectedDate.toLocaleDateString("pt-br")}
+                    date={dateLabelOnD0}
                     hasSelectionArea={hasSelectionArea}
                     toggleHour={toggleHour}
                 />
@@ -75,7 +74,7 @@ export default function PlanModulation() {
                 <PlanModulationTable
                     planModulationData={planModulationData}
                     dayLabel="D+1"
-                    date={addDays(selectedDate, 1).toLocaleDateString("pt-br")}
+                    date={dateLabelOnDPlus1}
                     hasSelectionArea={hasSelectionArea}
                     toggleHour={toggleHour}
                 />

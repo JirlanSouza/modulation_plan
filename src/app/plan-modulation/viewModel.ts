@@ -1,4 +1,5 @@
 import { KeyEvent, useKeyboardEvent } from "@/hooks/useKeyboardEvent";
+import { addDays, dateFromInputToDate } from "@/utils/Date";
 import { KeyboardEvent, useEffect, useState } from "react";
 import {
     ModulationAreaToDefaultPlanModulationArea,
@@ -47,6 +48,12 @@ export function usePlanModulationViewModel() {
     useKeyboardEvent("Shift", KeyEvent.KEY_UP, setShiftKeyPressed);
     const service = new PlanModulationService();
 
+    const selectedDateToInputValue = selectedDate.toISOString().slice(0, 10);
+    const dateLabelOnD0 = selectedDate.toLocaleDateString("pt-br");
+    const dateLabelOnDPlus1 = addDays(selectedDate, 1).toLocaleDateString(
+        "pt-br"
+    );
+
     useEffect(() => {
         (async function getAreas() {
             const areas = await service.getAreas();
@@ -59,6 +66,10 @@ export function usePlanModulationViewModel() {
         })();
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
+
+    function selectDate(newDate: string) {
+        setSelectedDate(dateFromInputToDate(newDate, -4));
+    }
 
     function toggleHour(hourRef: ModulationHourRef) {
         if (ctrlPressed) {
@@ -126,11 +137,12 @@ export function usePlanModulationViewModel() {
     }
 
     return {
-        selectedDate,
-
+        selectedDateToInputValue,
+        dateLabelOnD0,
+        dateLabelOnDPlus1,
         hasSelectionArea: ctrlPressed,
         planModulationData,
-        setSelectedDate,
+        selectDate,
         toggleHour,
     };
 }
