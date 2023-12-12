@@ -1,3 +1,4 @@
-export function matchRoutePath(path: string) {
-    return window.location.pathname === path;
+"use client";
+export function matchRoutePath(currentPath: string, path: string) {
+    return currentPath === path;
 }

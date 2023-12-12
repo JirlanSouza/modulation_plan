@@ -12,3 +12,11 @@ export function dateFromInputToDate(date: string, timeZoneOffset: number) {
 
     return new Date(dateStr);
 }
+
+export function dateToISODateString(date: Date) {
+    return date.toISOString().slice(0, 10);
+}
+
+export function hourNumberToHourString(hourNumber: number) {
+    return hourNumber.toString().padStart(2, "0") + ":00";
+}
