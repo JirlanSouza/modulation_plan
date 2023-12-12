@@ -1,11 +1,15 @@
 import { KeyEvent, useKeyboardEvent } from "@/hooks/useKeyboardEvent";
+import { Area } from "@/models/Area";
+import {
+    ModulationPlanAreaViewData,
+    ModulationPlanAreaViewDataFactory,
+} from "@/models/ModulationPlan";
 import { addDays, dateFromInputToDate } from "@/utils/Date";
 import { KeyboardEvent, useEffect, useState } from "react";
 import {
-    ModulationAreaToDefaultPlanModulationArea,
-    PlanModulationArea,
-} from "./PlanModulation";
-import { PlanModulationService } from "./PlanModulationService";
+    getAreas,
+    saveModulationPlan,
+} from "../../models/PlanModulationService";
 
 export type ModulationHourRef = {
     areaIndex: number;
@@ -35,9 +39,9 @@ const defaulSelectionArea: () => SelectionArea = () => ({
 });
 
 export function usePlanModulationViewModel() {
-    const [selectedDate, setSelectedDate] = useState(new Date());
-    const [planModulationData, setPlanModulationData] = useState<
-        PlanModulationArea[]
+    const [selectedDate, setSelectedDate] = useState<Date>();
+    const [modulationPlanAreas, setModulationPlanAreas] = useState<
+        ModulationPlanAreaViewData[]
     >([]);
     const [ctrlPressed, setCtrlPressed] = useState(false);
     const [selectionArea, setSelectionArea] = useState<SelectionArea>(
@@ -46,45 +50,51 @@ export function usePlanModulationViewModel() {
 
     useKeyboardEvent("Shift", KeyEvent.KEY_DOWN, setShiftKeyPressed);
     useKeyboardEvent("Shift", KeyEvent.KEY_UP, setShiftKeyPressed);
-    const service = new PlanModulationService();
 
-    const selectedDateToInputValue = selectedDate.toISOString().slice(0, 10);
-    const dateLabelOnD0 = selectedDate.toLocaleDateString("pt-br");
-    const dateLabelOnDPlus1 = addDays(selectedDate, 1).toLocaleDateString(
-        "pt-br"
-    );
+    let selectedDateToInputValue = "";
+    let dateLabelOnD0 = "";
+    let dateLabelOnDPlus1 = "";
+
+    if (selectedDate) {
+        selectedDateToInputValue = selectedDate?.toISOString().slice(0, 10);
+        dateLabelOnD0 = selectedDate?.toLocaleDateString("pt-br");
+        dateLabelOnDPlus1 = addDays(selectedDate, 1).toLocaleDateString(
+            "pt-br"
+        );
+    }
 
     useEffect(() => {
-        (async function getAreas() {
-            const areas = await service.getAreas();
+        (async function () {
+            if (!selectedDate) return;
 
-            setPlanModulationData(
-                areas.map((area) =>
-                    ModulationAreaToDefaultPlanModulationArea(new Date(), area)
-                )
+            const areas = JSON.parse(
+                (await getAreas(selectedDate)) as unknown as string
+            ) as unknown as Area[];
+            const areasViewData = areas.map((a) =>
+                ModulationPlanAreaViewDataFactory.fromArea(a, selectedDate)
             );
+            setModulationPlanAreas(areasViewData);
         })();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    }, [selectedDate]);
 
     function selectDate(newDate: string) {
         setSelectedDate(dateFromInputToDate(newDate, -4));
     }
 
-    function toggleHour(hourRef: ModulationHourRef) {
+    function toggleHourState(hourRef: ModulationHourRef) {
         if (ctrlPressed) {
             handleSelectionArea(hourRef);
             return;
         }
 
-        planModulationData[hourRef.areaIndex].subAreas[
+        modulationPlanAreas[hourRef.areaIndex].subAreas[
             hourRef.subAreaIndex
         ].modulation[hourRef.day].hours[hourRef.hourIndex].state =
-            !planModulationData[hourRef.areaIndex].subAreas[
+            !modulationPlanAreas[hourRef.areaIndex].subAreas[
                 hourRef.subAreaIndex
             ].modulation[hourRef.day].hours[hourRef.hourIndex].state;
 
-        setPlanModulationData([...planModulationData]);
+        setModulationPlanAreas([...modulationPlanAreas]);
     }
 
     function setShiftKeyPressed(event: KeyboardEvent) {
@@ -118,22 +128,27 @@ export function usePlanModulationViewModel() {
                 ? selectionArea.hourRef
                 : hourRef;
 
-        deselectHoursInterval(intervalStart, intervalEnd);
+        changeStateHoursInterval(intervalStart, intervalEnd, true);
 
         setSelectionArea(defaulSelectionArea());
     }
 
-    function deselectHoursInterval(
+    function changeStateHoursInterval(
         start: ModulationHourRef,
-        end: ModulationHourRef
+        end: ModulationHourRef,
+        state: boolean
     ) {
         for (let i = start.hourIndex; i <= end.hourIndex; i++) {
-            planModulationData[start.areaIndex].subAreas[
+            modulationPlanAreas[start.areaIndex].subAreas[
                 start.subAreaIndex
-            ].modulation[start.day].hours[i].state = false;
+            ].modulation[start.day].hours[i].state = state;
         }
 
-        setPlanModulationData([...planModulationData]);
+        setModulationPlanAreas([...modulationPlanAreas]);
+    }
+
+    function saveChanges() {
+        saveModulationPlan(modulationPlanAreas);
     }
 
     return {
@@ -141,8 +156,9 @@ export function usePlanModulationViewModel() {
         dateLabelOnD0,
         dateLabelOnDPlus1,
         hasSelectionArea: ctrlPressed,
-        planModulationData,
+        planModulationData: modulationPlanAreas,
         selectDate,
-        toggleHour,
+        toggleHourState,
+        saveChanges,
     };
 }

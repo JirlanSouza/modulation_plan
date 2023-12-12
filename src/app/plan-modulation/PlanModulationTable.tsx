@@ -1,8 +1,9 @@
-import { PlanModulationArea } from "./PlanModulation";
+import { ModulationPlanAreaViewData } from "@/models/ModulationPlan";
+import { hourNumberToHourString } from "@/utils/Date";
 import { ModulationHourRef } from "./viewModel";
 
 interface PlanModulationTableProps {
-    planModulationData: PlanModulationArea[];
+    planModulationData: ModulationPlanAreaViewData[];
     dayLabel: string;
     isDZero?: boolean;
     date: string;
@@ -49,7 +50,7 @@ export function PlanModulationTable({
                                         key={hour.hour}
                                         className="bg-slate-200 px-1"
                                     >
-                                        {hour.hour}
+                                        {hourNumberToHourString(hour.hour)}
                                     </th>
                                 )
                             )}
@@ -60,11 +61,11 @@ export function PlanModulationTable({
                             area.subAreas.map((subArea, subAreaIndex) => (
                                 <tr
                                     key={subArea.name}
-                                    data-selectionArea={hasSelectionArea}
+                                    data-selectionarea={hasSelectionArea}
                                     className="
                                     bg-slate-200
                                     [&>td]:border [&>td]:border-slate-400
-                                    data-[selectionArea=true]:hover:border-y-yellow-200"
+                                    data-[selectionarea=true]:hover:border-y-yellow-200"
                                 >
                                     <td className="px-2  border-slate-600 sticky">
                                         {area.name}

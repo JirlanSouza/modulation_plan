@@ -11,7 +11,8 @@ export default function PlanModulation() {
         hasSelectionArea,
         planModulationData,
         selectDate,
-        toggleHour,
+        toggleHourState,
+        saveChanges,
     } = usePlanModulationViewModel();
 
     return (
@@ -33,6 +34,7 @@ export default function PlanModulation() {
                     text-slate-100
                     active:scale-95
                     transition-all"
+                        onClick={saveChanges}
                     >
                         Salvar
                     </button>
@@ -55,7 +57,6 @@ export default function PlanModulation() {
                                 e.preventDefault();
                                 e.stopPropagation();
                             }}
-                            onFocus={(e) => e.target.showPicker()}
                         />
                     </span>
                 </span>
@@ -68,7 +69,7 @@ export default function PlanModulation() {
                     isDZero
                     date={dateLabelOnD0}
                     hasSelectionArea={hasSelectionArea}
-                    toggleHour={toggleHour}
+                    toggleHour={toggleHourState}
                 />
 
                 <PlanModulationTable
@@ -76,7 +77,7 @@ export default function PlanModulation() {
                     dayLabel="D+1"
                     date={dateLabelOnDPlus1}
                     hasSelectionArea={hasSelectionArea}
-                    toggleHour={toggleHour}
+                    toggleHour={toggleHourState}
                 />
             </section>
         </div>
