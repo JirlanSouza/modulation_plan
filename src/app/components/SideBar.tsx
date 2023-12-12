@@ -2,9 +2,12 @@
 
 import { matchRoutePath } from "@/utils/Navegation";
 import { HomeIcon, SquaresPlusIcon } from "@heroicons/react/24/outline";
+import { useLocationContext } from "../contexts/location";
 import { NavButton } from "./NavButton";
 
 export function SideBar() {
+    const { pathname } = useLocationContext();
+
     return (
         <aside className="bg-slate-100 w-fit min-h-screen border-r border-slate-500">
             <nav
@@ -15,13 +18,13 @@ export function SideBar() {
                     label="Home"
                     path="/"
                     Icon={HomeIcon}
-                    isSelected={matchRoutePath("/")}
+                    isSelected={matchRoutePath(pathname, "/")}
                 />
                 <NavButton
                     label="Planejar modulação"
                     path="plan-modulation"
                     Icon={SquaresPlusIcon}
-                    isSelected={matchRoutePath("/plan-modulation")}
+                    isSelected={matchRoutePath(pathname, "/plan-modulation")}
                 />
             </nav>
         </aside>
