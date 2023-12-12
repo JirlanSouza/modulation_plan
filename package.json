@@ -3,7 +3,12 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "npm run services:up && next dev && npm run services:stop",
+    "services:up": "docker compose -f infra/compose.development.yml up -d",
+    "services:stop": "docker compose -f infra/compose.development.yml stop",
+    "migrate:up": "node infra/migrator.mjs up",
+    "migrate:down": "node infra/migrator.mjs down",
+    "migrate": "node infra/migrator.mjs migrate",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -11,6 +16,9 @@
   "dependencies": {
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
+    "dotenv": "^16.3.1",
+    "mysql2": "^3.6.5",
+    "mysql2-migrations": "^2.0.5",
     "next": "14.0.3",
     "react": "^18",
     "react-dom": "^18"
