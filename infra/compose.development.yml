@@ -1,0 +1,14 @@
+version: "2.4"
+services:
+    mysql_dev:
+        container_name: "mysql-dev"
+        image: "mysql:8.2.0-oracle"
+        env_file:
+            - ../.env
+        ports:
+            - "3306:3306"
+        volumes:
+            - mysql_data:/var/lib/mysql
+        restart: unless-stopped
+volumes:
+    mysql_data:
